@@ -95,12 +95,14 @@ function train_classif(classes::Vector{Symbol}, filename::String)
 			next!(train_progress)
 		end
 		
-		train_loss_progress = Progress(n_train, desc="Evaluating Train Loss: ")
-		test_loss_progress = Progress(n_test, desc="Evaluating Test Loss: ")
+		# takes quite a long time
 
-		train_loss = eval_loss(model, train_loader, n_train, train_loss_progress)
-		test_loss = eval_loss(model, test_loader, n_test, test_loss_progress)
-		println("Epoch $epoch: Train RMSE=$(round(train_loss, digits=4)), Test RMSE=$(round(test_loss, digits=4))")
+		# train_loss_progress = Progress(n_train, desc="Evaluating Train Loss: ")
+		# test_loss_progress = Progress(n_test, desc="Evaluating Test Loss: ")
+
+		# train_loss = eval_loss(model, train_loader, n_train, train_loss_progress)
+		# test_loss = eval_loss(model, test_loader, n_test, test_loss_progress)
+		# println("Epoch $epoch: Train RMSE=$(round(train_loss, digits=4)), Test RMSE=$(round(test_loss, digits=4))")
 	end
 	
 	model_cpu = model |> cpu
