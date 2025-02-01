@@ -26,3 +26,4 @@ Manifest.toml
 dataset/
 old/
 *.bson
+models/
