@@ -14,8 +14,8 @@ GalaxyTree.classify(path)
 
 # select random image from the testing image directory
 
-# dir = "dataset/images_test_rev1"
-# files = readdir(dir)
-# path = joinpath(dir, files[rand(1:end)])
+dir = "dataset/images_test_rev1"
+files = readdir(dir)
+path = joinpath(dir, files[rand(1:end)])
 
-# GalaxyTree.classify(path)
+GalaxyTree.classify(path)

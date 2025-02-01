@@ -86,7 +86,7 @@ function get_ground_truth(galaxy_id, ground_truth_df)
 	row = ground_truth_df[ground_truth_df.GalaxyID .== galaxy_id, :]
 	if nrow(row) == 0
 		@error "GalaxyID $galaxy_id not found in ground truth data."
-		return nothing
+		throw(ErrorException("GalaxyID $galaxy_id not found in ground truth data."))
 	end
 	return Vector(row[1, 2:end])  # Exclude the GalaxyID column
 end

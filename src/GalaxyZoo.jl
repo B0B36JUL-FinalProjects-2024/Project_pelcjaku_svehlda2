@@ -23,7 +23,7 @@ function preprocess_image(path)
 		return Float32.(arr)
 	catch e
 		@error "Error processing image: $path" exception=e
-		return zeros(Float32, IMG_SIZE..., 3)  #ret blank image on error
+		throw(ArgumentError("No file exists at given path: $path"))
 	end
 end
 
