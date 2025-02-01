@@ -24,5 +24,58 @@ The decision tree can also be represented by the following table:
 
 ![Galaxy Zoo Decision Table](img/questions.png)
 
+## Training
+
+To train the CNNs, run the training scripts in `src`:
+
+```bash
+julia src/_train_Q[num].jl
+```
+
+the models are saved in the `models/` directory in a `.bson` format.
+
+## Classification
+
+To classify an image, run the `GalaxyTree` classifier (or run `src/main.jl`):
+
+```julia
+include("GalaxyTree.jl")
+
+using .GalaxyTree
+
+GalaxyTree.classify("dataset/whirpool.jpg")
+```
+and the following classification will be printed:
+
+```txt
+=== Galaxy Zoo Decision Tree ===
+Evaluating image: dataset/whirpool.jpg
+-------------------------------
+Q1: Is the object a smooth galaxy, a galaxy with features/disk, or a star?
+  ↳ features or disk
+
+Q2: Could this be a disk viewed edge-on?
+  ↳ no
+
+Q3: Is there a sign of a bar feature through the centre of the galaxy?
+  ↳ no
+
+Q4: Is there any sign of a spiral arm pattern?
+  ↳ yes
+
+Q10: How tightly wound do the spiral arms appear?
+  ↳ medium
+
+Q11: How many spiral arms are there?
+  ↳ can't tell
+
+Q5: How prominent is the central bulge, compared with the rest of the galaxy?
+  ↳ no bulge
+
+Q6: Is there anything odd?
+  ↳ no
+
+=== end of classification ===
+```
 
 Jakub Pelc, Daniel Švehla for [B0B36JUL](https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/stable/), 2024

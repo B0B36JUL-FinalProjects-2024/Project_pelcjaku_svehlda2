@@ -1,7 +1,14 @@
-using Flux, Images, BSON, CSV, DataFrames, Statistics
+module GalaxyTree
 
+# using Pkg
+# Pkg.activate(".")
+# Pkg.add.(["Flux", "Images", "BSON", "ImageView"])
+
+using Flux, Images, BSON, ImageView
 
 include("GalaxyZoo.jl")
+include("questions.jl")
+
 using .GalaxyZoo
 
 models = []
@@ -74,39 +81,56 @@ function classify_image(image_path)
 	return results
 end
 
-ground_truth_path = "./dataset/training_solutions_rev1.csv"
-ground_truth_df = CSV.read(ground_truth_path, DataFrame)
+function decision_tree(results)
+	println("Q1: Is the object a smooth galaxy, a galaxy with features/disk, or a star?")
 
-# calculate MSE
-function calculate_mse(predicted, ground_truth)
-	return mean((predicted .- ground_truth) .^ 2)
-end
-
-function get_ground_truth(galaxy_id, ground_truth_df)
-	row = ground_truth_df[ground_truth_df.GalaxyID .== galaxy_id, :]
-	if nrow(row) == 0
-		@error "GalaxyID $galaxy_id not found in ground truth data."
-		return nothing
+	if results["Class1.1"] > results["Class1.2"] && results["Class1.1"] > results["Class1.3"]
+		println("  ↳ smooth")
+		return question07(results)
+	elseif results["Class1.2"] > results["Class1.1"] && results["Class1.2"] > results["Class1.3"]
+		println("  ↳ features or disk")
+		return question02(results)
+	else
+		println("  ↳ star or artifact")
+		return "Star or Artifact"
 	end
-	return Vector(row[1, 2:end])  # Exclude the GalaxyID column
 end
 
-image_path = "./dataset/images_training_rev1/100008.jpg"
-if isfile(image_path)
-	galaxy_id = parse(Int, split(basename(image_path), ".")[1])
-	
-	ground_truth = get_ground_truth(galaxy_id, ground_truth_df)
-	if ground_truth === nothing
-		exit()
+
+function classify(image_path)
+	if isfile(image_path)
+		img = load(image_path)
+		println("\nDisplaying image: $image_path")
+		display(img)
+
+		results = classify_image(image_path)
+
+		println("\n=== Galaxy Zoo Decision Tree ===")
+		println("Evaluating image: $image_path")
+		println("-------------------------------")
+
+		final_classification = decision_tree(results)
+		println("\n=== end of classification ===")
+		#println("  ↳ $final_classification")
+	else
+		@error "Image file not found: $image_path"
 	end
-	
-	results = classify_image(image_path)
-	
-	sorted_keys = sort(collect(keys(results)), by=x -> (parse(Int, split(x, '.')[1][6:end]), parse(Int, split(x, '.')[2])))
-	predicted_probs = [results[key] for key in sorted_keys]
-	
-	mse = calculate_mse(predicted_probs, ground_truth)
-	println("Mean Squared Error for GalaxyID $galaxy_id: $mse")
-else
-	@error "Image file not found: $image_path"
 end
+
+# testing classification
+# image_path = "./dataset/images_test_rev1/132523.jpg"
+# image_path = "./dataset/whirpool.jpg"
+# if isfile(image_path)
+# 	img = load(image_path)
+# 	println("\nDisplaying image: $image_path")
+# 	display(img)
+
+# 	results = classify_image(image_path)
+# 	final_classification = decision_tree(results)
+# 	println("\n=== end of classification ===")
+# 	#println("  ↳ $final_classification")
+# else
+# 	@error "Image file not found: $image_path"
+# end
+
+end # -------- end of module GalaxyTree --------

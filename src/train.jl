@@ -95,7 +95,7 @@ function train_classif(classes::Vector{Symbol}, filename::String)
 			next!(train_progress)
 		end
 		
-		# takes quite a long time
+		#takes quite a long time
 
 		# train_loss_progress = Progress(n_train, desc="Evaluating Train Loss: ")
 		# test_loss_progress = Progress(n_test, desc="Evaluating Test Loss: ")
