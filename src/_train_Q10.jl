@@ -11,4 +11,4 @@ classes = [Symbol("Class10.1"), Symbol("Class10.2"), Symbol("Class10.3")]
 # Q10. How tightly wound are the spiral arms? 3 responses
 ########################################################################################
 
-train_classif(classes, "class10_classif.bson")
+train_classif(classes, "models/class10_classif.bson")

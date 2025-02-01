@@ -11,4 +11,4 @@ classes = [Symbol("Class7.1"), Symbol("Class7.2"), Symbol("Class7.3")]
 # Q7. How round is the smooth galaxy? 3 responses
 ########################################################################################
 
-train_classif(classes, "class7_classif.bson")
+train_classif(classes, "models/class7_classif.bson")

@@ -11,4 +11,4 @@ classes = [Symbol("Class3.1"), Symbol("Class3.2")]
 # Q3. Is there a bar? 2 responses
 ########################################################################################
 
-train_classif(classes, "class3_classif.bson")
+train_classif(classes, "models/class3_classif.bson")

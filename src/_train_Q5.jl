@@ -11,4 +11,4 @@ classes = [Symbol("Class5.1"), Symbol("Class5.2"), Symbol("Class5.3"), Symbol("C
 # Q5. How prominent is the central bulge? 4 responses
 ########################################################################################
 
-train_classif(classes, "class5_classif.bson")
+train_classif(classes, "models/class5_classif.bson")

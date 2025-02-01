@@ -11,4 +11,4 @@ classes = [Symbol("Class1.1"), Symbol("Class1.2"), Symbol("Class1.3")]
 # Q1. Is the object a smooth galaxy, a galaxy with features/disk or a star? 3 responses
 ########################################################################################
 
-train_classif(classes, "class1_classif.bson")
+train_classif(classes, "models/class1_classif.bson")

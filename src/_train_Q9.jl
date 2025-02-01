@@ -11,4 +11,4 @@ classes = [Symbol("Class9.1"), Symbol("Class9.2"), Symbol("Class9.3")]
 # Q9. What shape is the bulge in the edge-on galaxy? 3 responses
 ########################################################################################
 
-train_classif(classes, "class9_classif.bson")
+train_classif(classes, "models/class9_classif.bson")

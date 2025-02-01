@@ -11,4 +11,4 @@ classes = [Symbol("Class6.1"), Symbol("Class6.2")]
 # Q6. Is there anything "odd" about the galaxy? 2 responses
 ########################################################################################
 
-train_classif(classes, "class6_classif.bson")
+train_classif(classes, "models/class6_classif.bson")

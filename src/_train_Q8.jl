@@ -11,4 +11,4 @@ classes = [Symbol("Class8.1"), Symbol("Class8.2"), Symbol("Class8.3"), Symbol("C
 # Q8. What is the odd feature? 7 responses
 ########################################################################################
 
-train_classif(classes, "class8_classif.bson")
+train_classif(classes, "models/class8_classif.bson")

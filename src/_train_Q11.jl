@@ -11,4 +11,4 @@ classes = [Symbol("Class11.1"), Symbol("Class11.2"), Symbol("Class11.3"), Symbol
 # Q11. How many spiral arms are there? 6 responses
 ########################################################################################
 
-train_classif(classes, "class11_classif.bson")
+train_classif(classes, "models/class11_classif.bson")

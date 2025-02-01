@@ -11,4 +11,4 @@ classes = [Symbol("Class2.1"), Symbol("Class2.2")]
 # Q2. Is it edge-on? 2 responses
 ########################################################################################
 
-train_classif(classes, "class2_classif.bson")
+train_classif(classes, "models/class2_classif.bson")

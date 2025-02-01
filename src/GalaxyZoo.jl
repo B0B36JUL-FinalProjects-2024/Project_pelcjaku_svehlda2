@@ -1,8 +1,9 @@
 module GalaxyZoo
+export preprocess_image, load_data, IMG_SIZE
 
 using Flux, Images, DataFrames, CSV, MLDataUtils, CUDA, ProgressMeter, BSON, cuDNN
 
-const IMG_SIZE = (224, 224)
+IMG_SIZE = (224, 224)
 
 function preprocess_image(path)
 	try

@@ -7,6 +7,7 @@ using .GalaxyZoo
 
 const BATCH_SIZE = 32
 const N_EPOCHS = 10
+const LR = 0.001
 
 function create_loader(df, class_columns::Vector{Symbol}; shuffle=true)
 	indices = shuffle ? shuffleobs(1:nrow(df)) : 1:nrow(df)
@@ -76,21 +77,29 @@ function train_classif(classes::Vector{Symbol}, filename::String)
 
 	model = create_model(num_classes)
 	
-	opt = Adam(0.001) #LR: 0.001
+	opt = Adam(LR)
 	state = Flux.setup(opt, model)
 	
 	# raining loop
-	@showprogress for epoch in 1:N_EPOCHS
+	for epoch in 1:N_EPOCHS
+
+		train_progress = Progress(n_train, desc="Training Epoch $epoch: ")
+
 		for (x, y) in train_loader
 			x, y = x |> gpu, y |> gpu
 			grads = gradient(model) do m
 				loss(x, y, m)
 			end
 			Flux.update!(state, model, grads[1])
+
+			next!(train_progress)
 		end
 		
-		train_loss = eval_loss(model, train_loader, n_train)
-		test_loss = eval_loss(model, test_loader, n_test)
+		train_loss_progress = Progress(n_train, desc="Evaluating Train Loss: ")
+		test_loss_progress = Progress(n_test, desc="Evaluating Test Loss: ")
+
+		train_loss = eval_loss(model, train_loader, n_train, train_loss_progress)
+		test_loss = eval_loss(model, test_loader, n_test, test_loss_progress)
 		println("Epoch $epoch: Train RMSE=$(round(train_loss, digits=4)), Test RMSE=$(round(test_loss, digits=4))")
 	end
 	
@@ -99,11 +108,13 @@ function train_classif(classes::Vector{Symbol}, filename::String)
 end
 
 # Evaluation function using RMSE
-function eval_loss(model, loader, n_batches)
+function eval_loss(model, loader, n_batches, progress_bar)
 	total_loss = 0.0f0
+
 	for (x, y) in loader
 		x, y = x |> gpu, y |> gpu
 		total_loss += loss(x, y, model)
+		next!(progress_bar)
 	end
 	return total_loss / n_batches
 end
