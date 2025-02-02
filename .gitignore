@@ -27,5 +27,8 @@ dataset/
 old/
 *.bson
 models/
+models_old/
 tempfile.jpg
 temp
+
+*_resized.*

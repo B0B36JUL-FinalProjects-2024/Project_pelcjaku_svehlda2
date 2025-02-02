@@ -8,7 +8,7 @@ using .GalaxyZoo
 	@testset "Image Preprocessing" begin
 		img_path = "dataset/images_training_rev1/100023.jpg"
 		img_array = GalaxyZoo.preprocess_image(img_path)
-		@test size(img_array) == (224, 224, 3)  # check if the image is resized correctly
+		@test size(img_array) == (52, 52, 3)  # check if the image is resized correctly
 		@test eltype(img_array) == Float32      # check if the image is converted to Float32
 
 		# Test with an invalid image (non-existent path)

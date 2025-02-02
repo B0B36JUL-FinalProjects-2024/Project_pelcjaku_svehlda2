@@ -50,23 +50,46 @@ SOMBRERO_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/M104_n
 		@test isfile("temp")
 	end
 
-	#test local file gets classified
-	@testset "run_cli_classification" begin
-		cmd = "tests/test.jpg"
-		std_file = "stdout.txt"
+	@testset "run_cli" begin
+		
+		#test local file gets classified
+		@testset "run_cli_classification_file_gets_classified" begin
+			cmd = "tests/test.jpg"
+			std_file = "stdout.txt"
 
-		open(std_file, "w") do io
-			redirect_stdout(io) do
-				run_cli(cmd=cmd)
+			open(std_file, "w") do io
+				redirect_stdout(io) do
+					run_cli(cmd=cmd)
+				end
 			end
+
+			@test isfile(std_file)
+			@test filesize(std_file) > 0
+
+			output = read(std_file, String)
+			normalized_output = replace(output, "\r\n" => "\n")
+			@test occursin(r"features or disk", normalized_output)
+			rm(std_file)
 		end
 
-		@test isfile(std_file)
-		@test filesize(std_file) > 0
+		#test bar feature classification
+		@testset "run_cli_classification_bar_feature" begin
+			cmd = "tests/test2.jpg"
+			std_file = "stdout.txt"
 
-		output = read(std_file, String)
-		normalized_output = replace(output, "\r\n" => "\n")
-		@test occursin(r"medium", normalized_output)
-		rm(std_file)
+			open(std_file, "w") do io
+				redirect_stdout(io) do
+					run_cli(cmd=cmd)
+				end
+			end
+
+			@test isfile(std_file)
+			@test filesize(std_file) > 0
+
+			output = read(std_file, String)
+			normalized_output = replace(output, "\r\n" => "\n")
+			@test occursin(r"yes, there is a sign of a bar feature", normalized_output)
+			rm(std_file)
+		end
 	end
 end

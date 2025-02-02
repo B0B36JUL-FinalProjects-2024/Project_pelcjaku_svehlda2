@@ -6,7 +6,9 @@ using Flux, Images, BSON, Downloads, ImageView
 using Random
 
 include("GalaxyTree.jl")
+include("GalaxyZoo.jl")
 using .GalaxyTree
+using .GalaxyZoo
 
 const TRAINING_FOLDER = "dataset/images_training_rev1"
 const TESTING_FOLDER = "dataset/images_test_rev1"
@@ -27,6 +29,35 @@ function get_random_image(folder)
 	rand(files)
 end
 
+function show_image(img_path)
+	img = load(img_path)
+	ImageView.imshow(img)
+
+	#show the processed image
+	processed = GalaxyZoo.preprocess_image(img_path)
+	ImageView.imshow(processed)
+end
+
+function resize_external(img_path)
+	#resize the image to 424x424 as in the galaxyzoo dataset
+
+	if size(load(img_path)) == (424, 424)
+		return img_path
+	end
+
+	img = load(img_path)
+	resized = Images.imresize(img, (424, 424))
+	
+	path = split(img_path, ".")
+	resized_path = joinpath(path[1] * "_resized." * path[2])
+	save(resized_path, resized)
+
+	return resized_path
+end
+
+#TODO: add feature of displaying the input image to the neural network
+#TODO: add feature to display the kernels of the neural network
+
 function display_help()
 	println("----------------------------------------")
 	println("Available commands:\n")
@@ -43,6 +74,7 @@ function run_cli(; cmd = nothing)
 	println("Galaxy Image Classification CLI")
 	println("Type 'help' for a list of commands or 'exit' to quit.")
 
+	
 	while true
 		print("Enter a command: ")
 
@@ -57,46 +89,63 @@ function run_cli(; cmd = nothing)
 		if lowercase(user_input) == "exit"
 			println("Exiting...")
 			break
+
+
 		elseif lowercase(user_input) == "help"
 			display_help()
+
+
 		elseif lowercase(user_input) == "test?"
 			println("Selecting a random image from the testing folder...")
 			try
 				img_path = get_random_image(TESTING_FOLDER)
 				println("Classifying image: ", img_path)
-				img = load(img_path)
-				ImageView.imshow(img)
+				
+				show_image(img_path)
+
 				result = GalaxyTree.classify(img_path)
 				println("Classification result: ", result)
 			catch e
 				println("An error occurred: ", e)
 			end
+
+
 		elseif lowercase(user_input) == "train?"
 			println("Selecting a random image from the training folder...")
 			try
 				img_path = get_random_image(TRAINING_FOLDER)
 				println("Classifying image: ", img_path)
-				img = load(img_path)
-				ImageView.imshow(img)
+				
+				show_image(img_path)
+
 				result = GalaxyTree.classify(img_path)
 				println("Classification result: ", result)
 			catch e
 				println("An error occurred: ", e)
 			end
+
+
 		else
 			try
 				if startswith(user_input, "http://") || startswith(user_input, "https://")
 					println("Loading image from URL: ", user_input)
 					load_image_from_url(user_input)
-					img = load("temp")
-					ImageView.imshow(img)
+
+					resize_external("temp")
+					
+					show_image("temp")
+
 					result = GalaxyTree.classify("temp")
 					println("Classification result: ", result)
 				elseif isfile(user_input)
 					println("Classifying image: ", user_input)
-					img = load(user_input)
-					ImageView.imshow(img)
-					result = GalaxyTree.classify(user_input)
+
+					resized = resize_external(user_input)
+					
+					show_image(resized)
+
+					println("Resized image path: ", resized)
+					result = GalaxyTree.classify(resized)
 					println("Classification result: ", result)
 				else
 					println("Invalid input. Please provide a valid file path, URL, or command.")

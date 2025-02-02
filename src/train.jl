@@ -1,8 +1,9 @@
 using Pkg
-Pkg.add.(["Flux", "Images", "DataFrames", "CSV", "MLDataUtils", "CUDA", "ProgressMeter", "BSON", "cuDNN"])
-using Flux, Images, DataFrames, CSV, MLDataUtils, CUDA, ProgressMeter, BSON, cuDNN
+Pkg.add.(["Flux", "Images", "DataFrames", "CSV", "MLDataUtils", "CUDA", "ProgressMeter", "BSON", "cuDNN", "ImageTransformations"])
+using Flux, Images, DataFrames, CSV, MLDataUtils, CUDA, ProgressMeter, BSON, cuDNN, ImageTransformations
 
 include("GalaxyZoo.jl")
+include("model.jl")
 using .GalaxyZoo
 
 const BATCH_SIZE = 32
@@ -19,7 +20,7 @@ function create_loader(df, class_columns::Vector{Symbol}; shuffle=true)
 		valid_indices = []
 		for i in batch
 			img = GalaxyZoo.preprocess_image(df.image_path[i])
-			if size(img) == (IMG_SIZE..., 3)
+			if size(img) == (GalaxyZoo.IMG_SIZE..., 3)
 				push!(images, img)
 				push!(valid_indices, i)
 			else
@@ -29,29 +30,13 @@ function create_loader(df, class_columns::Vector{Symbol}; shuffle=true)
 		
 		labels = Matrix(df[valid_indices, class_columns])'
 		
-		X = length(images) > 0 ? cat(images..., dims=4) : zeros(Float32, IMG_SIZE..., 3, 0)
+		X = length(images) > 0 ? cat(images..., dims=4) : zeros(Float32, GalaxyZoo.IMG_SIZE..., 3, 0)
 		y = Float32.(labels)
 		return (X, y)
 	end
 	
 	n_batches = ceil(Int, nrow(df) / BATCH_SIZE)
 	return (getbatch(i) for i in 1:n_batches), n_batches
-end
-
-function create_model(n_classes::Int)
-	Chain(
-		Conv((3, 3), 3 => 32, relu; pad=1),
-		MaxPool((2, 2)),
-		Conv((3, 3), 32 => 64, relu; pad=1),
-		MaxPool((2, 2)),
-		Conv((3, 3), 64 => 128, relu; pad=1),
-		MaxPool((2, 2)),
-		Flux.flatten,
-		Dense(128 * 28 * 28, 512, relu),  # 224/8 = 28
-		Dropout(0.5),
-		Dense(512, n_classes),
-		softmax
-	) |> gpu
 end
 
 # RMSE loss
@@ -109,7 +94,7 @@ function train_classif(classes::Vector{Symbol}, filename::String)
 	BSON.@save filename model_cpu
 end
 
-# Evaluation function using RMSE
+# evaluation function using RMSE
 function eval_loss(model, loader, n_batches, progress_bar)
 	total_loss = 0.0f0
 
