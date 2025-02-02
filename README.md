@@ -26,10 +26,16 @@ The decision tree can also be represented by the following table:
 
 ## Training
 
-To train the CNNs, run the training scripts in `src`:
+To train the CNNs run the training scripts in `src`:
 
 ```bash
 julia src/_train_Q[num].jl
+```
+or you can download the pretrained models by running
+
+```bash
+chmod +x getmodels.sh
+./getmodels.sh
 ```
 
 the models are saved in the `models/` directory in a `.bson` format.
