@@ -27,3 +27,5 @@ dataset/
 old/
 *.bson
 models/
+tempfile.jpg
+temp

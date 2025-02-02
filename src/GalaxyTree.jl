@@ -4,7 +4,7 @@ module GalaxyTree
 # Pkg.activate(".")
 # Pkg.add.(["Flux", "Images", "BSON", "ImageView"])
 
-using Flux, Images, BSON, ImageView
+using Flux, Images, BSON
 
 include("GalaxyZoo.jl")
 include("questions.jl")
@@ -99,9 +99,9 @@ end
 
 function classify(image_path)
 	if isfile(image_path)
-		img = load(image_path)
-		println("\nDisplaying image: $image_path")
-		display(img)
+		# img = load(image_path)
+		# println("\nDisplaying image: $image_path")
+		# display(img)
 
 		results = classify_image(image_path)
 

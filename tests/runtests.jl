@@ -8,6 +8,7 @@ using Test
 	include("test_basic.jl")
 	include("test_galaxyzoo.jl")
 	include("test_galaxytree.jl")
+	include("test_cli.jl")
 end
 
 nothing
