@@ -1,4 +1,3 @@
-# tests/test_galaxytree.jl
 using Test
 using Flux, Images, BSON, DataFrames, CSV
 include("../src/GalaxyZoo.jl")
