@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODEL_DIR="modelst"
+MODEL_DIR="models"
 
 if [ ! -d $MODEL_DIR ]; then
 mkdir $MODEL_DIR

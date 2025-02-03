@@ -55,33 +55,43 @@ and the following classification will be printed:
 
 ```txt
 === Galaxy Zoo Decision Tree ===
-Evaluating image: dataset/whirpool.jpg
+Evaluating image: tests/test2.jpg
 -------------------------------
 Q1: Is the object a smooth galaxy, a galaxy with features/disk, or a star?
   ↳ features or disk
 
 Q2: Could this be a disk viewed edge-on?
-  ↳ no
+  ↳ no, this could not be a disk viewed edge-on
 
 Q3: Is there a sign of a bar feature through the centre of the galaxy?
-  ↳ no
+  ↳ yes, there is a sign of a bar feature
 
 Q4: Is there any sign of a spiral arm pattern?
-  ↳ yes
-
-Q10: How tightly wound do the spiral arms appear?
-  ↳ medium
-
-Q11: How many spiral arms are there?
-  ↳ can't tell
+  ↳ no, there is no sign of a spiral arm pattern
 
 Q5: How prominent is the central bulge, compared with the rest of the galaxy?
-  ↳ no bulge
+  ↳ just noticeable
 
 Q6: Is there anything odd?
-  ↳ no
+  ↳ no, there is nothing odd
 
 === end of classification ===
+```
+
+You can also run the CLI:
+
+```bash
+julia> include("src/cli.jl")
+julia> run_cli()
+```
+
+```txt
+  <file path> - Classify the image at the given path.
+  <URL> - Classify the image from the given URL.
+  test? - Classify a random image from the testing folder.
+  train? - Classify a random image from the training folder.
+  help - Display help message.
+  exit - Exit the CLI.
 ```
 
 Jakub Pelc, Daniel Švehla for [B0B36JUL](https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/stable/), 2024

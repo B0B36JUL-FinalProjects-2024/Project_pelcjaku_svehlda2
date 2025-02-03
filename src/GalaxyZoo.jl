@@ -44,9 +44,9 @@ function preprocess_image(path)
 		
 		#if the image is not already the desired size, resize it
 		if size(img) != (crop_height, crop_width)
-			println("Resizing image from $path")
-			println(size(img))
-			println(crop_height, crop_width)
+			#println("Resizing image from $path")
+			#println(size(img))
+			#println(crop_height, crop_width)
 			img = view(img, start_row:start_row+crop_height-1, start_col:start_col+crop_width-1)
 		end
 
