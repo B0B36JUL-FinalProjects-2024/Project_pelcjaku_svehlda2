@@ -9,8 +9,8 @@ SOMBRERO_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/M104_n
 	@testset "load_image_from_url" begin
 		url = SOMBRERO_URL
 		load_image_from_url(url)
-		@test isfile("temp")
-		rm("temp")
+		@test isfile("temp.jpg")
+		rm("temp.jpg")
 	end
 
 	# Test get_random_image function
@@ -47,7 +47,7 @@ SOMBRERO_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/M104_n
 
 		#test if temp file is created
 		run_cli(cmd=cmd)
-		@test isfile("temp")
+		@test isfile("temp.jpg")
 	end
 
 	@testset "run_cli" begin

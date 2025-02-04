@@ -30,5 +30,6 @@ models/
 models_old/
 tempfile.jpg
 temp
+temp.jpg
 
 *_resized.*

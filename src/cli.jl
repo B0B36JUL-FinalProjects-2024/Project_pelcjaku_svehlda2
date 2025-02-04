@@ -1,9 +1,8 @@
 using Pkg
 Pkg.activate(".")
-Pkg.add.(["Flux", "Images", "BSON", "Downloads", "ImageView", "Crayons"])
+Pkg.add.(["Flux", "Images", "BSON", "Downloads", "ImageView", "Crayons", "URIs"])
 
-using Flux, Images, BSON, Downloads, ImageView
-using Random
+using Flux, Images, BSON, Downloads, ImageView, Random, URIs
 
 include("GalaxyTree.jl")
 include("GalaxyZoo.jl")
@@ -14,8 +13,11 @@ const TRAINING_FOLDER = "dataset/images_training_rev1"
 const TESTING_FOLDER = "dataset/images_test_rev1"
 
 function load_image_from_url(url)
-	Downloads.download(url, "temp")
-	nothing
+	temp_file = "temp.jpg"
+
+	Downloads.download(String(url), temp_file)
+	
+	return temp_file
 end
 
 function get_random_image(folder)
@@ -25,7 +27,6 @@ function get_random_image(folder)
 	if isempty(files)
 		error("No valid image files found in the folder: $folder")
 	end
-	
 	rand(files)
 end
 
@@ -128,14 +129,15 @@ function run_cli(; cmd = nothing)
 			try
 				if startswith(user_input, "http://") || startswith(user_input, "https://")
 					println("Loading image from URL: ", user_input)
-					load_image_from_url(user_input)
-
-					resize_external("temp")
 					
-					show_image("temp")
+					temp_file = load_image_from_url(user_input)
 
-					result = GalaxyTree.classify("temp")
-					#println("Classification result: ", result)
+					resized = resize_external(temp_file)
+					
+					show_image(resized)
+
+					result = GalaxyTree.classify(resized)
+					# println("Classification result: ", result)
 				elseif isfile(user_input)
 					println("Classifying image: ", user_input)
 
