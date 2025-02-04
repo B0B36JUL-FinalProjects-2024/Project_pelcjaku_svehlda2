@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate(".")
-Pkg.add.(["Flux", "Images", "BSON", "Downloads", "ImageView"])
+Pkg.add.(["Flux", "Images", "BSON", "Downloads", "ImageView", "Crayons"])
 
 using Flux, Images, BSON, Downloads, ImageView
 using Random
@@ -29,13 +29,12 @@ function get_random_image(folder)
 	rand(files)
 end
 
-function show_image(img_path)
-	img = load(img_path)
-	ImageView.imshow(img)
+function show_image(🖼️_path)
+	🖼️ = load(🖼️_path)
+	ImageView.imshow(🖼️)
 
-	#show the processed image
-	processed = GalaxyZoo.preprocess_image(img_path)
-	ImageView.imshow(processed)
+	🌌 = GalaxyZoo.preprocess_image(🖼️_path)
+	ImageView.imshow(🌌)
 end
 
 function resize_external(img_path)
@@ -104,7 +103,7 @@ function run_cli(; cmd = nothing)
 				show_image(img_path)
 
 				result = GalaxyTree.classify(img_path)
-				println("Classification result: ", result)
+				#println("Classification result: ", result)
 			catch e
 				println("An error occurred: ", e)
 			end
@@ -119,7 +118,7 @@ function run_cli(; cmd = nothing)
 				show_image(img_path)
 
 				result = GalaxyTree.classify(img_path)
-				println("Classification result: ", result)
+				#println("Classification result: ", result)
 			catch e
 				println("An error occurred: ", e)
 			end
@@ -136,7 +135,7 @@ function run_cli(; cmd = nothing)
 					show_image("temp")
 
 					result = GalaxyTree.classify("temp")
-					println("Classification result: ", result)
+					#println("Classification result: ", result)
 				elseif isfile(user_input)
 					println("Classifying image: ", user_input)
 
@@ -146,7 +145,7 @@ function run_cli(; cmd = nothing)
 
 					println("Resized image path: ", resized)
 					result = GalaxyTree.classify(resized)
-					println("Classification result: ", result)
+					#println("Classification result: ", result)
 				else
 					println("Invalid input. Please provide a valid file path, URL, or command.")
 				end

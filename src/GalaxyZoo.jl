@@ -32,6 +32,12 @@ const RESIZED   = (52, 52)    # Final image size after resizing.
 
 IMG_SIZE = RESIZED
 
+"""
+	preprocess_image(path::String)
+
+Preprocesses an image at the given path for use in the neural network. The image is cropped to the
+CROP_SIZE, then resized to the RESIZED size. The image is then normalized to have values between 0 and 1.
+"""
 function preprocess_image(path)
 	try
 		img = load(path)
@@ -79,6 +85,18 @@ function preprocess_image(path)
 	end
 end
 
+"""
+load_data(class_columns::Vector{Symbol})
+
+Loads the training data from the dataset and returns a DataFrame with the specified columns.
+Only classes specified in class_columns are included in the DataFrame.
+
+# Examples
+```julia
+julia> classes = [Symbol("Class1.1"), Symbol("Class1.2"), Symbol("Class1.3")]
+julia> data = load_data(classes)
+```
+"""
 function load_data(class_columns::Vector{Symbol})
 	data = CSV.read("./dataset/training_solutions_rev1.csv", DataFrame)
 	data.image_path = [joinpath("./dataset/images_training_rev1", "$(row.GalaxyID).jpg") for row in eachrow(data)]

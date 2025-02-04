@@ -1,6 +1,6 @@
 # Galaxy Zoo Classifier
 
-The aim of this project is to implement a classifier for the Galaxy Zoo dataset as described in the Kaggle competition [Galaxy Zoo - The Galaxy Challenge](https://www.kaggle.com/c/galaxy-zoo-the-galaxy-challenge).
+The aim of this project is to implement a classifier for the Galaxy Zoo[1] dataset as described in the Kaggle competition [Galaxy Zoo - The Galaxy Challenge](https://www.kaggle.com/c/galaxy-zoo-the-galaxy-challenge)[2].
 
 The classifier should be able to predict the type of galaxy based on this decision tree:
 
@@ -22,7 +22,7 @@ which corresponds to the following classes:
 
 The decision tree can also be represented by the following table:
 
-![Galaxy Zoo Decision Table](img/questions.png)
+![Galaxy Zoo Decision Table](img/questions.png) [3]
 
 ## Training
 
@@ -39,6 +39,36 @@ chmod +x getmodels.sh
 ```
 
 the models are saved in the `models/` directory in a `.bson` format.
+
+The CNN architecture is defined as:
+
+```julia
+Chain(
+	Conv((7, 7), 3 => 16, relu; pad = 3),
+	MaxPool((2, 2)),
+	
+	Conv((3, 3), 16 => 16, relu; pad = 1),
+	MaxPool((2, 2)),
+	
+	Conv((3, 3), 16 => 32, relu; pad = 1),
+	MaxPool((2, 2)),
+	
+	Flux.flatten,
+	Dense(32 * 6 * 6, 512, relu),
+	Dropout(0.5),
+	
+	Dense(512, 256, relu),
+	Dropout(0.5),
+	Dense(256, 128, relu),
+	Dropout(0.5),
+	Dense(128, n_classes),
+	Flux.softmax
+)
+```
+
+and the trained kernels look like this:
+
+![Kernels](img/kernels.png)
 
 ## Classification
 
@@ -93,5 +123,13 @@ julia> run_cli()
   help - Display help message.
   exit - Exit the CLI.
 ```
+
+# References
+
+[1] [Galaxy Zoo](https://www.galaxyzoo.org/)
+
+[2] [Galaxy Zoo - The Galaxy Challenge (kaggle)](https://www.kaggle.com/c/galaxy-zoo-the-galaxy-challenge)
+
+[3] [Galaxy Zoo 2: detailed morphological classifications for 304,122 galaxies from the Sloan Digital Sky Survey](https://arxiv.org/abs/1308.3496)
 
 Jakub Pelc, Daniel Švehla for [B0B36JUL](https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/stable/), 2024

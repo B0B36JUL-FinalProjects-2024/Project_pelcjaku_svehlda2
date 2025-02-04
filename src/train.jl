@@ -39,7 +39,18 @@ function create_loader(df, class_columns::Vector{Symbol}; shuffle=true)
 	return (getbatch(i) for i in 1:n_batches), n_batches
 end
 
-# RMSE loss
+"""
+loss(x, y, model)
+
+# The RMSE loss is calculated as:
+
+`√(1/N * Σ(pᵢ - aᵢ)²)`
+
+Where:
+- `N` is the number of galaxies times the total number of responses
+- `pᵢ` is the predicted value
+- `aᵢ` is the actual value
+"""
 function loss(x, y, model)
 	ŷ = model(x)
 	return sqrt(Flux.Losses.mse(ŷ, y))
@@ -94,7 +105,11 @@ function train_classif(classes::Vector{Symbol}, filename::String)
 	BSON.@save filename model_cpu
 end
 
-# evaluation function using RMSE
+"""
+eval_loss(model, loader, n_batches, progress_bar)
+
+Evaluate the loss of the model on the given loader.
+"""
 function eval_loss(model, loader, n_batches, progress_bar)
 	total_loss = 0.0f0
 
@@ -105,5 +120,3 @@ function eval_loss(model, loader, n_batches, progress_bar)
 	end
 	return total_loss / n_batches
 end
-
-#main()
