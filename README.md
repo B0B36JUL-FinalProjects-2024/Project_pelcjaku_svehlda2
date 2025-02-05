@@ -47,7 +47,7 @@ chmod +x getmodels.sh
 
 the models are saved in the `models/` directory in a `.bson` format.
 
-The CNN architecture is defined as:
+The CNN architecture is defined as (inspired by [4]):
 
 ```julia
 Chain(
@@ -131,6 +131,7 @@ julia> run_cli()
   help - Display help message.
   exit - Exit the CLI.
 ```
+![CLI/GUI](img/cli.png)
 
 # References
 
@@ -139,5 +140,7 @@ julia> run_cli()
 [2] [Galaxy Zoo - The Galaxy Challenge (kaggle)](https://www.kaggle.com/c/galaxy-zoo-the-galaxy-challenge)
 
 [3] [Galaxy Zoo 2: detailed morphological classifications for 304,122 galaxies from the Sloan Digital Sky Survey](https://arxiv.org/abs/1308.3496)
+
+[4] [Applying a Deep Learning Approach to Galaxy Classification with Galaxy Zoo](https://medium.com/@thomas.mcrobie999/applying-a-deep-learning-approach-to-galaxy-classification-with-galaxy-zoo-2-afb51c81541f)
 
 Jakub Pelc for [B0B36JUL](https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/stable/), 2024
