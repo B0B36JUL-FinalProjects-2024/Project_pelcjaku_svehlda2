@@ -90,24 +90,26 @@ function get_ground_truth(galaxy_id, ground_truth_df)
 	return Vector(row[1, 2:end])  # Exclude the GalaxyID column
 end
 
-image_path = "./dataset/images_training_rev1/100078.jpg"
-if isfile(image_path)
-	ground_truth_df = CSV.read(ground_truth_path, DataFrame)
+function multiclassif()
+	image_path = "./dataset/images_training_rev1/100078.jpg"
+	if isfile(image_path)
+		ground_truth_df = CSV.read(ground_truth_path, DataFrame)
 
-	galaxy_id = parse(Int, split(basename(image_path), ".")[1])
-	
-	ground_truth = get_ground_truth(galaxy_id, ground_truth_df)
-	if ground_truth === nothing
-		exit()
+		galaxy_id = parse(Int, split(basename(image_path), ".")[1])
+		
+		ground_truth = get_ground_truth(galaxy_id, ground_truth_df)
+		if ground_truth === nothing
+			exit()
+		end
+		
+		results = classify_image(image_path)
+		
+		sorted_keys = sort(collect(keys(results)), by=x -> (parse(Int, split(x, '.')[1][6:end]), parse(Int, split(x, '.')[2])))
+		predicted_probs = [results[key] for key in sorted_keys]
+		
+		mse = calculate_mse(predicted_probs, ground_truth)
+		println("Mean Squared Error for GalaxyID $galaxy_id: $mse")
+	else
+		@error "Image file not found: $image_path"
 	end
-	
-	results = classify_image(image_path)
-	
-	sorted_keys = sort(collect(keys(results)), by=x -> (parse(Int, split(x, '.')[1][6:end]), parse(Int, split(x, '.')[2])))
-	predicted_probs = [results[key] for key in sorted_keys]
-	
-	mse = calculate_mse(predicted_probs, ground_truth)
-	println("Mean Squared Error for GalaxyID $galaxy_id: $mse")
-else
-	@error "Image file not found: $image_path"
 end
