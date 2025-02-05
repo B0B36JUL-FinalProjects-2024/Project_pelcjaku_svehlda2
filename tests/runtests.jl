@@ -1,6 +1,4 @@
-using Pkg
-Pkg.activate(".")
-Pkg.add("ImageView")
+include("../src/env.jl")
 
 using Test
 

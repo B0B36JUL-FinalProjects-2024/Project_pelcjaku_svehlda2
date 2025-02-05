@@ -31,6 +31,13 @@ To train the CNNs run the training scripts in `src`:
 ```bash
 julia src/_train_Q[num].jl
 ```
+
+or train all the models:
+
+```bash
+julia src/__train_all.jl
+```
+
 or you can download the pretrained models by running
 
 ```bash
@@ -111,6 +118,7 @@ Q6: Is there anything odd?
 You can also run the CLI:
 
 ```bash
+julia> include("src/env.jl")
 julia> include("src/cli.jl")
 julia> run_cli()
 ```
@@ -132,4 +140,4 @@ julia> run_cli()
 
 [3] [Galaxy Zoo 2: detailed morphological classifications for 304,122 galaxies from the Sloan Digital Sky Survey](https://arxiv.org/abs/1308.3496)
 
-Jakub Pelc, Daniel Švehla for [B0B36JUL](https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/stable/), 2024
+Jakub Pelc for [B0B36JUL](https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/stable/), 2024

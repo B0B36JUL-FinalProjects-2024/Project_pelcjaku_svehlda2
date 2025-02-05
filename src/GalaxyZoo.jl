@@ -1,7 +1,7 @@
 module GalaxyZoo
 export preprocess_image, load_data, IMG_SIZE
 
-using Flux, Images, DataFrames, CSV, MLDataUtils, CUDA, ProgressMeter, BSON, cuDNN, ImageTransformations
+using Flux, Images, DataFrames, CSV, MLDataUtils, ProgressMeter, ImageTransformations
 
 # IMG_SIZE = (224, 224)
 
