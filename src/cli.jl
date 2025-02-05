@@ -31,11 +31,12 @@ function get_random_image(folder)
 end
 
 function show_image(🖼️_path)
+	name = split(🖼️_path, "/")[end]
 	🖼️ = load(🖼️_path)
-	ImageView.imshow(🖼️)
+	ImageView.imshow(🖼️, title="$name")
 
 	🌌 = GalaxyZoo.preprocess_image(🖼️_path)
-	ImageView.imshow(🌌)
+	ImageView.imshow(🌌, title="$name")
 end
 
 function resize_external(img_path)
@@ -88,6 +89,7 @@ function run_cli(; cmd = nothing)
 
 		if lowercase(user_input) == "exit"
 			println("Exiting...")
+			ImageView.closeall()
 			break
 
 
@@ -160,4 +162,8 @@ function run_cli(; cmd = nothing)
 			break
 		end
 	end
+end
+
+function run_cli(commands::Vector{String})
+	map(cmd -> run_cli(cmd=cmd), commands)
 end
