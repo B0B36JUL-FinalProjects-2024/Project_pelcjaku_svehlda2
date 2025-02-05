@@ -33,3 +33,5 @@ temp
 temp.jpg
 
 *_resized.*
+
+!tests/classif.bson
