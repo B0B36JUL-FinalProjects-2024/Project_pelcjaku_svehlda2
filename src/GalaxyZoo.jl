@@ -94,9 +94,9 @@ julia> classes = [Symbol("Class1.1"), Symbol("Class1.2"), Symbol("Class1.3")]
 julia> data = load_data(classes)
 ```
 """
-function load_data(class_columns::Vector{Symbol})
-	data = CSV.read("./dataset/training_solutions_rev1.csv", DataFrame)
-	data.image_path = [joinpath("./dataset/images_training_rev1", "$(row.GalaxyID).jpg") for row in eachrow(data)]
+function load_data(class_columns::Vector{Symbol}, data_path::String="./dataset/training_solutions_rev1.csv", img_path::String="./dataset/images_training_rev1")
+	data = CSV.read(data_path, DataFrame)
+	data.image_path = [joinpath(img_path, "$(row.GalaxyID).jpg") for row in eachrow(data)]
 	selected_columns = [:GalaxyID, :image_path]
 	selected_columns = vcat(selected_columns, class_columns)
 	data = data[:, selected_columns]
