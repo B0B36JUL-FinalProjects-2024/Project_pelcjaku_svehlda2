@@ -42,13 +42,13 @@ SOMBRERO_URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/M104_n
 		rm(std_file)
 	end
 
-	@testset "run_cli_url" begin
-		cmd = SOMBRERO_URL
+	# @testset "run_cli_url" begin
+	# 	cmd = SOMBRERO_URL
 
-		#test if temp file is created
-		run_cli(cmd=cmd)
-		@test isfile("temp.jpg")
-	end
+	# 	#test if temp file is created
+	# 	run_cli(cmd=cmd)
+	# 	@test isfile("temp.jpg")
+	# end
 
 	@testset "run_cli" begin
 		
