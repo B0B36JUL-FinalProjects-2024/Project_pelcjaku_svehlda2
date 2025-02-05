@@ -75,7 +75,6 @@ function classify_image(image_path)
 end
 
 ground_truth_path = "./dataset/training_solutions_rev1.csv"
-ground_truth_df = CSV.read(ground_truth_path, DataFrame)
 
 # calculate MSE
 function calculate_mse(predicted, ground_truth)
@@ -93,6 +92,8 @@ end
 
 image_path = "./dataset/images_training_rev1/100078.jpg"
 if isfile(image_path)
+	ground_truth_df = CSV.read(ground_truth_path, DataFrame)
+
 	galaxy_id = parse(Int, split(basename(image_path), ".")[1])
 	
 	ground_truth = get_ground_truth(galaxy_id, ground_truth_df)
